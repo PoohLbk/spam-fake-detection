@@ -6,7 +6,7 @@ import requests
 # ----------------------------------------------------
 st.set_page_config(
     page_title="AI Text Classifier - Spam & Fake News Detection",
-    page_icon="🛡️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -59,12 +59,12 @@ with st.sidebar:
         "ประมวลผลผ่าน FastAPI High-Performance Backend"
     )
     st.divider()
-    st.caption("🚀 Version 1.0.0 | Hosted on Render & Streamlit Cloud")
+    st.caption("Version 1.0.0 | Hosted on Render & Streamlit Cloud")
 
 # ----------------------------------------------------
 # 4. Main UI Content
 # ----------------------------------------------------
-st.markdown('<div class="main-header">🛡️ AI Content Authenticity Verifier</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">AI Content Authenticity Verifier</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">ระบบวิเคราะห์และตรวจสอบข้อความสแปม (Spam) และข่าวปลอม (Fake News) ด้วยปัญญาประดิษฐ์</div>', unsafe_allow_html=True)
 
 # ตัวอย่างข้อความทดสอบแบบรวดเร็ว (Quick Test Buttons)
@@ -72,13 +72,13 @@ st.markdown("##### 💡 เลือกข้อความตัวอย่�
 col_sample1, col_sample2, col_sample3 = st.columns(3)
 
 sample_text = ""
-if col_sample1.button("📧 ตัวอย่าง Spam Email"):
+if col_sample1.button("ตัวอย่าง Spam Email"):
     sample_text = "URGENT: You have been selected to win a $1,000 Amazon Gift Card! Click here to claim your reward before it expires in 24 hours: http://bit.ly/claim-prize-now"
 
-if col_sample2.button("📰 ตัวอย่าง Fake News"):
+if col_sample2.button("ตัวอย่าง Fake News"):
     sample_text = "BREAKING: Scientists confirm that drinking warm lemon water cures all virus infections instantly."
 
-if col_sample3.button("✉️️ ตัวอย่าง ข้อความปกติ"):
+if col_sample3.button("ตัวอย่าง ข้อความปกติ"):
     sample_text = "Hi team, please review the attached meeting notes for tomorrow's project discussion at 10 AM."
 
 # ช่องกรอกข้อความ
@@ -91,16 +91,16 @@ user_input = st.text_area(
 
 col_btn, _ = st.columns([1, 4])
 with col_btn:
-    submit_btn = st.button("🔍 เริ่มวิเคราะห์ข้อความ", type="primary", use_container_width=True)
+    submit_btn = st.button("เริ่มวิเคราะห์ข้อความ", type="primary", use_container_width=True)
 
 # ----------------------------------------------------
 # 5. การประมวลผลและการแสดงผลลัพธ์ (Result Dashboard)
 # ----------------------------------------------------
 if submit_btn:
     if not user_input.strip():
-        st.warning("⚠️ กรุณากรอกข้อความก่อนกดเริ่มวิเคราะห์")
+        st.warning("กรุณากรอกข้อความก่อนกดเริ่มวิเคราะห์")
     else:
-        with st.spinner("⏳ กำลังเชื่อมต่อ AI Engine บน Render Cloud เพื่อวิเคราะห์ข้อมูล..."):
+        with st.spinner("กำลังเชื่อมต่อ AI Engine บน Render Cloud เพื่อวิเคราะห์ข้อมูล..."):
             try:
                 response = requests.post(BACKEND_URL, json={"text": user_input}, timeout=120)
                 
