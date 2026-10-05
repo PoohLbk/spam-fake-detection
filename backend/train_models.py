@@ -1,48 +1,49 @@
 import os
 import joblib
-import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
+# หา Path ของโฟลเดอร์ backend โดยตรง
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SPAM_MODEL_PATH = os.path.join(BASE_DIR, 'spam_model.joblib')
 FAKE_MODEL_PATH = os.path.join(BASE_DIR, 'fake_model.joblib')
 
-def train_fake_news_model():
-    print("⏳ กำลังโหลดและเทรน Fake News Dataset...")
-    
-    # สามารถใส่ URL หรือ Path ของไฟล์ CSV จาก Kaggle/GitHub ได้
-    # หรือถ้ามีไฟล์ News.csv อยู่ในโฟลเดอร์ data/
-    data_path = os.path.join(BASE_DIR, '..', 'data', 'News.csv')
-    
-    if os.path.exists(data_path):
-        df = pd.read_csv(data_path)
-    else:
-        # กรณีไม่มีไฟล์โลคัล สามารถดึงจาก Public URL ได้
-        url = "https://raw.githubusercontent.com/project-datasets/fake-news/main/News.csv"
-        df = pd.read_csv(url)
+# --- [1. Train Spam Model] ---
+spam_data = [
+    ("Win a $1000 Walmart gift card now! Click here", 1),
+    ("Congratulations! You have been selected for a free prize", 1),
+    ("Please review the meeting minutes from yesterday", 0),
+    ("Are we still meeting for lunch today at 12?", 0)
+]
+X_spam, y_spam = zip(*spam_data)
 
-    # ทำความสะอาดข้อมูลเบื้องต้น
-    df = df.dropna(subset=['text', 'class'])
-    
-    X = df['text']
-    y = df['class']
+spam_pipeline = Pipeline([
+    ('tfidf', TfidfVectorizer()),
+    ('clf', LogisticRegression())
+])
+spam_pipeline.fit(X_spam, y_spam)
 
-    # แบ่ง Train/Test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# บันทึกไฟล์ลงโฟลเดอร์ backend
+joblib.dump(spam_pipeline, SPAM_MODEL_PATH)
+print(f"Saved spam_model.joblib to {SPAM_MODEL_PATH} successfully!")
 
-    # สร้างและเทรน Pipeline
-    pipeline = Pipeline([
-        ('tfidf', TfidfVectorizer(stop_words='english', max_features=10000)),
-        ('clf', LogisticRegression(max_iter=1000))
-    ])
-    
-    pipeline.fit(X_train, y_train)
-    
-    # บันทึกโมเดล
-    joblib.dump(pipeline, FAKE_MODEL_PATH)
-    print(f"✅ เทรน Fake News Model สำเร็จ! เซฟไว้ที่: {FAKE_MODEL_PATH}")
 
-if __name__ == "__main__":
-    train_fake_news_model()
+# --- [2. Train Fake News Model] ---
+fake_data = [
+    ("Scientists discover drinking green tea turns humans into reptiles", 1),
+    ("Shocking leak reveals secret moon base built by ancient aliens", 1),
+    ("The central bank announced a new policy regarding interest rates today", 0),
+    ("Local weather forecast predicts mild rain over the weekend", 0)
+]
+X_fake, y_fake = zip(*fake_data)
+
+fake_pipeline = Pipeline([
+    ('tfidf', TfidfVectorizer()),
+    ('clf', LogisticRegression())
+])
+fake_pipeline.fit(X_fake, y_fake)
+
+# บันทึกไฟล์ลงโฟลเดอร์ backend
+joblib.dump(fake_pipeline, FAKE_MODEL_PATH)
+print(f"Saved fake_model.joblib to {FAKE_MODEL_PATH} successfully!")
