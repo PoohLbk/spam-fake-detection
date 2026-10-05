@@ -3,7 +3,7 @@ import requests
 
 BACKEND_URL = "https://spam-fake-detection.onrender.com/predict"
 
-st.title("🛡️ Spam Email & Fake News Detector")
+st.title("Spam Email & Fake News Detector")
 user_input = st.text_area("กรอกข้อความที่ต้องการตรวจสอบ:")
 
 if st.button("วิเคราะห์ข้อความ", type="primary"):
