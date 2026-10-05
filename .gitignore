@@ -1,0 +1,73 @@
+# ==========================================
+# 1. Environment & Virtual Environments (สภาพแวดล้อมระบบ)
+# ==========================================
+venv/
+.venv/
+env/
+.env
+*.env
+bin/
+lib/
+include/
+
+# ==========================================
+# 2. Python & Bytecode Cache (ไฟล์แคชของ Python)
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ==========================================
+# 3. Large Machine Learning Models & Datasets
+# (โมเดลขนาดใหญ่และชุดข้อมูลที่ไม่ควรขึ้น Git)
+# ==========================================
+# ไฟล์โมเดลขนาดใหญ่
+*.joblib
+*.pkl
+*.h5
+*.pth
+*.pt
+*.onnx
+*.bin
+*.pb
+
+# โฟลเดอร์เก็บข้อมูล / Dataset
+data/
+datasets/
+*.csv
+*.jsonl
+*.parquet
+
+# ==========================================
+# 4. Jupyter Notebook Checkpoints (ไฟล์แคชของ Notebook)
+# ==========================================
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# ==========================================
+# 5. OS & IDE Specific Files (ไฟล์ของระบบปฏิบัติการและ Editor)
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.lsbfsum
+
+# VS Code & PyCharm
+.vscode/
+.idea/
+
+# Streamlit Local Config
+.streamlit/secrets.toml
+
+# ==========================================
+# 6. Logs & Temporary Files (ไฟล์ Log และไฟล์ชั่วคราว)
+# ==========================================
+*.log
+logs/
+runs/
+wandb/
+mlruns/
+temp/
+tmp/
