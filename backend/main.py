@@ -5,6 +5,7 @@ import subprocess
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from pythainlp.tokenize import word_tokenize
 
 app = FastAPI()
 
@@ -19,6 +20,10 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SPAM_MODEL_PATH = os.path.join(BASE_DIR, 'spam_model.joblib')
 FAKE_MODEL_PATH = os.path.join(BASE_DIR, 'fake_model.joblib')
+
+# ฟังก์ชันตัดคำภาษาไทย (ต้องมีเพื่อให้ joblib โหลดโมเดล TF-IDF ได้ถูกต้อง)
+def thai_tokenizer(text: str):
+    return word_tokenize(text, engine='newmm')
 
 # สั่งรัน train_models.py หากยังไม่มีไฟล์โมเดล
 if not os.path.exists(SPAM_MODEL_PATH) or not os.path.exists(FAKE_MODEL_PATH):
@@ -38,9 +43,11 @@ class TextRequest(BaseModel):
 
 def clean_text(text: str) -> str:
     text = text.lower()
+    # ลบ URL
     text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
-    text = re.sub(r'[^\w\s]', '', text)
-    return text.strip()
+    # ตัดคำภาษาไทยและอังกฤษ แล้วเชื่อมด้วยช่องว่าง
+    tokens = word_tokenize(text.strip(), engine='newmm')
+    return " ".join(tokens)
 
 @app.get("/")
 def read_root():
