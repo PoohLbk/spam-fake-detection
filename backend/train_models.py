@@ -9,11 +9,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SPAM_MODEL_PATH = os.path.join(BASE_DIR, 'spam_model.joblib')
 FAKE_MODEL_PATH = os.path.join(BASE_DIR, 'fake_model.joblib')
 
+# ฟังก์ชันตัดคำ
 def thai_tokenizer(text):
-    # ตัดคำภาษาไทยเพื่อแยกเป็นคำๆ ให้ TfidfVectorizer เข้าใจ
     return word_tokenize(text, engine='newmm')
 
-# --- 1. Spam Dataset (ไทย + อังกฤษ) ---
+# --- 1. Spam Dataset ---
 spam_data = [
     ("Win a $1000 Walmart gift card now! Click here", 1),
     ("Congratulations! You have been selected for a free prize", 1),
@@ -31,7 +31,7 @@ spam_pipeline = Pipeline([
 spam_pipeline.fit(X_spam, y_spam)
 joblib.dump(spam_pipeline, SPAM_MODEL_PATH)
 
-# --- 2. Fake News Dataset (ไทย + อังกฤษ) ---
+# --- 2. Fake News Dataset ---
 fake_data = [
     ("Scientists discover drinking green tea turns humans into reptiles", 1),
     ("ด่วน! ดื่มน้ำมะนาวผสมโซดาตอนเช้าช่วยรักษาโรคมะเร็งหายขาดได้ใน 7 วัน", 1),
