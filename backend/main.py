@@ -1,11 +1,19 @@
 import os
 import re
+import sys
 import joblib
 import subprocess
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pythainlp.tokenize import word_tokenize
+
+# --- [สำคัญ] นิยาม thai_tokenizer และผูกกับ __main__ เพื่อป้องกัน AttributeError จาก joblib ---
+def thai_tokenizer(text: str):
+    return word_tokenize(text, engine='newmm')
+
+# ผูกฟังก์ชันเข้ากับ __main__ เสมอ
+sys.modules['__main__'].thai_tokenizer = thai_tokenizer
 
 app = FastAPI()
 
@@ -20,10 +28,6 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SPAM_MODEL_PATH = os.path.join(BASE_DIR, 'spam_model.joblib')
 FAKE_MODEL_PATH = os.path.join(BASE_DIR, 'fake_model.joblib')
-
-# ฟังก์ชันตัดคำภาษาไทย (ต้องมีเพื่อให้ joblib โหลดโมเดล TF-IDF ได้ถูกต้อง)
-def thai_tokenizer(text: str):
-    return word_tokenize(text, engine='newmm')
 
 # สั่งรัน train_models.py หากยังไม่มีไฟล์โมเดล
 if not os.path.exists(SPAM_MODEL_PATH) or not os.path.exists(FAKE_MODEL_PATH):
@@ -43,9 +47,7 @@ class TextRequest(BaseModel):
 
 def clean_text(text: str) -> str:
     text = text.lower()
-    # ลบ URL
     text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
-    # ตัดคำภาษาไทยและอังกฤษ แล้วเชื่อมด้วยช่องว่าง
     tokens = word_tokenize(text.strip(), engine='newmm')
     return " ".join(tokens)
 
