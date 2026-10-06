@@ -1,6 +1,8 @@
 # 🛡️ Thai Spam & Fake News Detection System
 
 ระบบตรวจจับสแปมและข่าวปลอมภาษาไทย พัฒนาด้วย **Python, Scikit-learn, PyThaiNLP** และให้บริการผ่าน **FastAPI (Backend)** พร้อมหน้าจอผู้ใช้ **Streamlit (Frontend)**
+
+
 https://spam-fake-detection-ngqssq394bmgdhgqckbaut.streamlit.app/
 ---
 
