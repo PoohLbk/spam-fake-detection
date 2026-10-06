@@ -1,7 +1,7 @@
 # 🛡️ Thai Spam & Fake News Detection System
 
 ระบบตรวจจับสแปมและข่าวปลอมภาษาไทย พัฒนาด้วย **Python, Scikit-learn, PyThaiNLP** และให้บริการผ่าน **FastAPI (Backend)** พร้อมหน้าจอผู้ใช้ **Streamlit (Frontend)**
-
+https://spam-fake-detection-ngqssq394bmgdhgqckbaut.streamlit.app/
 ---
 
 ## 🚀 Features (คุณสมบัติเด่น)
@@ -17,7 +17,6 @@
 โมเดล Fake News Detection ได้รับการเทรนและประเมินผลด้วยชุดข้อมูล **`EXt1/Thai-True-Fake-News`** จาก Hugging Face ผ่านกระบวนการ 5-Fold Cross-Validation
 
 ### 📈 Learning Curve (Accuracy vs Training Size)
-![Model Learning Curve](accuracy_learning_curve_xy.png)
 
 **สรุปผลการประเมิน:**
 - **Training Accuracy**: ~93.8%
