@@ -23,39 +23,33 @@ print("⏳ กำลังโหลด Dataset ข่าวจริง/ข่�
 dataset = load_dataset("EXt1/Thai-True-Fake-News")
 df_fake = pd.DataFrame(dataset['train'])
 
+# พิมพ์ชื่อคอลัมน์ทั้งหมดออกมาดูเพื่อความชัวร์
+print(f"📋 ชื่อคอลัมน์ใน Dataset: {df_fake.columns.tolist()}")
+
+# เช็คชื่อคอลัมน์ข้อความอัตโนมัติ
+text_col = None
+for col in ['text', 'content', 'news', 'statement', 'text_th']:
+    if col in df_fake.columns:
+        text_col = col
+        break
+
+# เช็คชื่อคอลัมน์ Label อัตโนมัติ
+label_col = None
+for col in ['label', 'target', 'class', 'is_fake']:
+    if col in df_fake.columns:
+        label_col = col
+        break
+
+if not text_col or not label_col:
+    # ถ้าหาไม่เจอ ให้ใช้คอลัมน์แรกเป็นข้อความ คอลัมน์ที่สองเป็น label
+    text_col = df_fake.columns[0]
+    label_col = df_fake.columns[1]
+
+print(f"🎯 ใช้คอลัมน์ข้อความ: '{text_col}' และ คอลัมน์ Label: '{label_col}'")
+
 # กำหนด Features (X) และ Label (y)
-X_fake = df_fake['text']
-y_fake = df_fake['label']
-
-# แบ่งข้อมูลเป็น Train Set (80%) และ Test Set (20%) สำหรับวัด Accuracy
-X_train_fake, X_test_fake, y_train_fake, y_test_fake = train_test_split(
-    X_fake, y_fake, test_size=0.2, random_state=42, stratify=y_fake
-)
-
-print(f"📊 ขนาดข้อมูล Fake News ทั้งหมด: {len(df_fake)} (Train: {len(X_train_fake)}, Test: {len(X_test_fake)})")
-
-fake_pipeline = Pipeline([
-    ('tfidf', TfidfVectorizer(tokenizer=thai_tokenizer, token_pattern=None, max_features=10000)),
-    ('clf', LogisticRegression(max_iter=1000))
-])
-
-# เทรนโมเดลด้วย Train Set
-fake_pipeline.fit(X_train_fake, y_train_fake)
-
-# ประเมินประสิทธิภาพบน Test Set (การหาค่า Accuracy)
-y_pred_fake = fake_pipeline.predict(X_test_fake)
-fake_acc = accuracy_score(y_test_fake, y_pred_fake)
-
-print("\n==========================================")
-print(f"🎯 Fake News Model Accuracy: {fake_acc * 100:.2f}%")
-print("==========================================")
-print(classification_report(y_test_fake, y_pred_fake, target_names=['Real News', 'Fake News']))
-
-# บันทึกโมเดล
-joblib.dump(fake_pipeline, FAKE_MODEL_PATH)
-print("✅ บันทึก fake_model.joblib เรียบร้อยแล้ว!\n")
-
-
+X_fake = df_fake[text_col]
+y_fake = df_fake[label_col]
 # ----------------------------------------------------
 # 2. Train & Evaluate Spam Model
 # ----------------------------------------------------
