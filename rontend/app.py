@@ -19,18 +19,23 @@ BACKEND_URL = "https://spam-fake-detection.onrender.com/predict"
 # ----------------------------------------------------
 st.markdown("""
 <style>
-    /* Clean Header Typography */
+    /* Clean Header Typography - ปรับฟอนต์หัวข้อเป็นสีขาว */
     .main-header {
-        font-size: 2.1rem;
+        font-size: 2.3rem;
         font-weight: 700;
-        color: #0F172A;
+        color: #FFFFFF !important; /* บังคับเปลี่ยนสีฟอนต์เป็นสีขาว */
         text-align: center;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #1E293B, #0F172A); /* ใส่พื้นหลังเข้มเพื่อให้ข้อความสีขาวเด่นชัด */
+        border-radius: 10px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     .sub-header {
         font-size: 0.95rem;
-        color: #475569;
+        color: #94A3B8; /* ปรับสีคำอธิบายเป็นสีเทาสว่างเพื่อรองรับข้อความสีขาว */
         text-align: center;
+        margin-top: 0.5rem;
         margin-bottom: 1.8rem;
     }
     /* Result Cards Design */
@@ -63,7 +68,7 @@ with st.sidebar:
 # ----------------------------------------------------
 # 4. Main UI Layout
 # ----------------------------------------------------
-st.markdown('<div class="main-header">ระบบตรวจสอบข้อความสแปมและข่าวปลอม</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">🛡️ ระบบตรวจสอบข้อความสแปมและข่าวปลอม</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Automated Text Authenticity and Intent Classification Engine</div>', unsafe_allow_html=True)
 
 # Quick Test Buttons
